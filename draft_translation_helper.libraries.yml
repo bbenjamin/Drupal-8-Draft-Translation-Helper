@@ -1,0 +1,5 @@
+draft_translation_helper_fe:
+  version: VERSION
+  css:
+    theme:
+      css/draft_translation_helper_fe.css: {}
