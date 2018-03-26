@@ -45,12 +45,13 @@ function draft_translation_helper_default_translation_is_draft($front = false) {
 }
 
 function draft_translation_helper_preprocess_block(&$variables) {
-  if($variables['plugin_id'] == 'local_tasks_block') {
-    /**
-     * If the node is a translation, and the original node has a draft in progress, make the node edit buttons inactive
-     * and let the user know they will be back once the original node's draft is published or removed.
+  if ($variables['plugin_id'] == 'local_tasks_block') {
+    /*
+     * If the node is a translation, and the original node has a draft in
+     * progress, make the node edit buttons inactive and let the user know
+     * they will be back once the original node's draft is published or removed.
      */
-    if( $language = draft_translation_helper_default_translation_is_draft(true) ) {
+    if ($language = draft_translation_helper_default_translation_is_draft(TRUE)) {
       $node = \Drupal::request()->attributes->get('node');
       $message = t('There is a draft in progress for the @language version of this page. 
       Editing options are disabled until the @language draft is published or removed. 
@@ -61,18 +62,22 @@ function draft_translation_helper_preprocess_block(&$variables) {
       $variables['content']['#primary']['other'] = [
         '#markup' => sprintf('<div data-alert="" class="alert-box radius alert">%s</div>', $message),
         '#allowed_tags' => ['div', 'a'],
-        '#weight' => -50
+        '#weight' => -50,
       ];
     }
   }
 }
 
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
 function draft_translation_helper_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  /**
-   * If the node is a translation, and the original node has a draft in progress, hide the form and
-   * inform the user they should not make edits until the original node's draft is published or removed
+  /*
+   * If the node is a translation, and the original node has a draft in progress,
+   * hide the form and inform the user they should not make edits until the
+   * original node's draft is published or removed
    */
-  if($language = draft_translation_helper_default_translation_is_draft()) {
+  if ($language = draft_translation_helper_default_translation_is_draft()) {
     $node = \Drupal::request()->attributes->get('node');
     $message = t('There is a draft in progress for the @language version of this page. 
       Editing options are disabled until the @language draft is published or removed. 
